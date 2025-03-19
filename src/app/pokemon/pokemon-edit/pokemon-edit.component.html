@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="card">
+  <div class="card-profile">
     <div class="profile">
       <div class="profile-image">
         <img
@@ -18,23 +18,65 @@
             type="text"
             [value]="pokemon().name"
             placeholder="Nom du Pokémon"
+            [class.isInvalid]="pokemonName.invalid"
           />
+          <!-- invalid-feedback -->
+          @if(pokemonName.hasError('required')){
+          <div class="invalid-feedback">Veuillez renseigner ce champ</div>
+          } @if(pokemonName.hasError('minlength')){
+          <div class="invalid-feedback">
+            Veuillez saisir un nom plus long (Minimum:
+            {{ pokemonName.getError("minlength").requiredLength }})
+          </div>
+          } @if(pokemonName.hasError('maxlength')){
+          <div class="invalid-feedback">
+            Veuillez saisir un nom plus court (Maximum:
+            {{ pokemonName.getError("maxlength").requiredLength }})
+          </div>
+          } @if(pokemonName.hasError('pattern')){
+          <div class="invalid-feedback">
+            Veuillez saisir un nom correct (Pattern: que des lettres min. et
+            maj.)
+          </div>
+          }
         </div>
         <div class="input-container">
           <label>Points de vie :</label>
-          <button type="button" (click)="decrementLife()">-</button>
+          <button
+            class="btn btn-outline-secondary"
+            [disabled]="pokemonLife.value <= POKEMON_RULES.MIN_LIFE"
+            type="button"
+            (click)="decrementLife()"
+          >
+            -
+          </button>
           <input
             formControlName="life"
             type="number"
             [value]="pokemon().life"
             title="Points de vie"
             placeholder="Points de vie"
+            [class.isInvalid]="pokemonLife.invalid"
           />
-          <button type="button" (click)="incrementLife()">+</button>
+          <button
+            class="btn btn-outline-secondary"
+            [disabled]="pokemonLife.value >= POKEMON_RULES.MAX_LIFE"
+            type="button"
+            (click)="incrementLife()"
+          >
+            +
+          </button>
         </div>
         <div class="input-container">
           <label>Dégâts :</label>
-          <button type="button" (click)="decrementDamage()">-</button>
+          <button
+            class="btn btn-outline-secondary"
+            [disabled]="pokemonDamage.value <= POKEMON_RULES.MIN_LIFE"
+            type="button"
+            (click)="decrementDamage()"
+          >
+            -
+          </button>
           <input
             formControlName="damage"
             type="number"
@@ -42,10 +84,17 @@
             title="Dégâts"
             placeholder="Dégâts"
           />
-          <button type="button" (click)="incrementDamage()">+</button>
+          <button
+            class="btn btn-outline-secondary"
+            [disabled]="pokemonDamage.value >= POKEMON_RULES.MAX_LIFE"
+            type="button"
+            (click)="incrementDamage()"
+          >
+            +
+          </button>
         </div>
         <div class="checkbox-container">
-          <div>
+          <div id="container-pills">
             <label>Types :</label>
             <div>
               @for(type of pokemonTypeList.controls; track type; let index =
@@ -61,7 +110,19 @@
               </button>
               }
             </div>
-            <div>
+
+            @if (pokemonTypeList.hasError('required')) {
+            <p class="invalid-feedback">
+              Veuillez sélectionner au moins un type de pokemon
+            </p>
+            }@if(pokemonTypeList.hasError('maxlength')){
+            <p class="invalid-feedback">
+              Veuillez sélectionner au maximum
+              {{ pokemonTypeList.getError("maxlength").requiredLength }} types
+              pour un pokemon
+            </p>
+            }
+            <div id="container-checkboxes">
               @for(type of pokemonService.getPokemonTypeList(); track type) {
               <label>
                 <input
@@ -84,7 +145,15 @@
           <button type="button" [routerLink]="['/pokemons', pokemon().id]">
             Retour
           </button>
-          <button type="submit">Sauvegarder les changements</button>
+          <button
+            type="submit"
+            class="submit-form"
+            [disabled]="form.invalid"
+            [class.text-warning]="form.valid"
+            [class.text-secondary]="form.invalid"
+          >
+            Sauvegarder les changements
+          </button>
         </div>
       </form>
     </div>

@@ -1,0 +1,23 @@
+.card-profile {
+  background: #ffe6e6;
+  border-radius: 1rem;
+}
+
+.isInvalid {
+  border: 2px solid #ff0000;
+  background-color: #ffe6e6;
+}
+
+.invalid-feedback {
+  font-size: 1.4rem;
+  font-style: italic;
+  color: #ff0000;
+}
+
+.text-secondary {
+  color: #6c757d;
+}
+
+.text-warning {
+  color: #ffc107;
+}

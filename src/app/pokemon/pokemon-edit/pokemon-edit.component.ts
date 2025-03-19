@@ -5,9 +5,10 @@ import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { getPokemonColor } from '../../pokemon.model';
+import { getPokemonColor, POKEMON_RULES } from '../../pokemon.model';
 import { PokemonService } from '../../services/pokemon.service';
 
 @Component({
@@ -15,7 +16,7 @@ import { PokemonService } from '../../services/pokemon.service';
   standalone: true,
   imports: [DatePipe, RouterLink, ReactiveFormsModule],
   templateUrl: './pokemon-edit.component.html',
-  styles: ``,
+  styleUrls: ['./pokemon-edit.component.css'],
 })
 export class PokemonEditComponent {
   readonly route = inject(ActivatedRoute);
@@ -27,12 +28,24 @@ export class PokemonEditComponent {
     this.pokemonService.getPokemonById(this.pokemonId())
   ).asReadonly();
 
+  POKEMON_RULES = POKEMON_RULES;
+
   readonly form = new FormGroup({
-    name: new FormControl(this.pokemon().name),
+    name: new FormControl(this.pokemon().name, [
+      Validators.required,
+      Validators.minLength(POKEMON_RULES.MIN_NAME),
+      Validators.maxLength(POKEMON_RULES.MAX_NAME),
+      Validators.pattern(POKEMON_RULES.NAME_PATTERN),
+    ]),
     life: new FormControl(this.pokemon().life),
     damage: new FormControl(this.pokemon().damage),
     types: new FormArray( //pour les array collection, select, checkbox ...
-      this.pokemon().types.map((type) => new FormControl(type))
+      this.pokemon().types.map((type) => new FormControl(type)),
+      [
+        Validators.required,
+        Validators.minLength(POKEMON_RULES.MIN_TYPES),
+        Validators.maxLength(POKEMON_RULES.MAX_TYPES),
+      ]
     ),
   });
 
@@ -44,8 +57,6 @@ export class PokemonEditComponent {
 
     if (result) {
     }
-
-    console.log('isElectrikSelected updated:', result); // Vérification
     return result;
   });
 
@@ -62,13 +73,23 @@ export class PokemonEditComponent {
       },
       {} as Record<string, { bg: string; text: string }>
     );
-
-    console.log('Types colors Updated! :', colors);
     return colors;
   });
 
   get pokemonTypeList(): FormArray {
     return this.form.get('types') as FormArray;
+  }
+
+  get pokemonName(): FormControl {
+    return this.form.get('name') as FormControl;
+  }
+
+  get pokemonLife(): FormControl {
+    return this.form.get('life') as FormControl;
+  }
+
+  get pokemonDamage(): FormControl {
+    return this.form.get('damage') as FormControl;
   }
 
   isPokemonTypeSelected(type: string): boolean {
@@ -102,34 +123,22 @@ export class PokemonEditComponent {
   }
 
   decrementLife() {
-    const lifeControl = this.form.get('life');
-    if (lifeControl) {
-      const currentValue = lifeControl.value as number;
-      lifeControl.setValue(currentValue - 1);
-    }
+    const newValue = this.pokemonLife.value - 1;
+    this.pokemonLife.setValue(newValue);
   }
 
   incrementLife() {
-    const lifeControl = this.form.get('life');
-    if (lifeControl) {
-      const currentValue = lifeControl.value as number;
-      lifeControl.setValue(currentValue + 1);
-    }
+    const newValue = this.pokemonLife.value + 1;
+    this.pokemonLife.setValue(newValue);
   }
 
   decrementDamage() {
-    const damageControl = this.form.get('damage');
-    if (damageControl) {
-      const currentValue = damageControl.value as number;
-      damageControl.setValue(currentValue - 1);
-    }
+    const newValue = this.pokemonDamage.value - 1;
+    this.pokemonDamage.setValue(newValue);
   }
 
   incrementDamage() {
-    const damageControl = this.form.get('damage');
-    if (damageControl) {
-      const currentValue = damageControl.value as number;
-      damageControl.setValue(currentValue + 1);
-    }
+    const newValue = this.pokemonDamage.value + 1;
+    this.pokemonDamage.setValue(newValue);
   }
 }

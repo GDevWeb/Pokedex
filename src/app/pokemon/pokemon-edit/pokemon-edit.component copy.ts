@@ -52,6 +52,7 @@ export class PokemonEditComponent {
     console.log('Types colors Updated! :', colors);
     return colors;
   });
+  POKEMON_RULES: any;
 
   get pokemonTypeList(): FormArray {
     return this.form.get('types') as FormArray;
