@@ -1,0 +1,27 @@
+<div class="card">
+  <img
+    [src]="pokemon().picture"
+    [alt]="pokemon().name"
+    [title]="pokemon().name"
+  />
+  <div id="content">
+    <header>
+      <h3>{{ pokemon().name }}</h3>
+    </header>
+    <div id="details">
+      <p>
+        Vie: <span>{{ pokemon().life }}</span>
+      </p>
+      <p>
+        <!-- Taille: <span>{{ size(pokemon) }}</span> -->
+      </p>
+      <p>{{ pokemon().created | date : "dd/MM/yyyy" }}</p>
+    </div>
+    <footer>
+      <button type="button">
+        <a [routerLink]="['/pokemons/edit', pokemon().id]">Éditer</a>
+      </button>
+      <button type="button">Supprimer</button>
+    </footer>
+  </div>
+</div>

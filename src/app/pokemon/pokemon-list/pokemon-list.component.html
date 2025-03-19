@@ -1,0 +1,46 @@
+<div id="container-search">
+  <form>
+    <label for="search">Rechercher un pokemon</label>
+    <input
+      type="text"
+      id="search"
+      name="search"
+      placeholder="nom du pokemon"
+      #searchField
+      [value]="searchTerm()"
+      (input)="searchTerm.set(searchField.value)"
+    />
+  </form>
+</div>
+
+<div id="grid">
+  @for (pokemon of pokemonListFiltered(); track pokemon.id) {
+  <div class="card" appPokemonBorder [pokemonType]="pokemon.types[0]">
+    <img [src]="pokemon.picture" [alt]="pokemon.name" [title]="pokemon.name" />
+    <div id="content">
+      <header>
+        <h3>{{ pokemon.name }}</h3>
+      </header>
+      <div id="details">
+        <p>
+          Vie: <span>{{ pokemon.life }}</span>
+        </p>
+        <p>
+          Taille: <span>{{ size(pokemon) }}</span>
+        </p>
+        <p>{{ pokemon.created | date : "dd/MM/yyyy" }}</p>
+      </div>
+      <footer>
+        <div id="navLink">
+          <a
+            [routerLink]="['/pokemons', pokemon.id]"
+            routerLinkActive="router-link-active"
+            >Voir</a
+          >
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  }
+</div>

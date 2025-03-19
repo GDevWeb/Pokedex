@@ -1,0 +1,92 @@
+<div class="container">
+  <div class="card">
+    <div class="profile">
+      <div class="profile-image">
+        <img
+          [src]="pokemon().picture"
+          [alt]="pokemon().name"
+          [title]="pokemon().name"
+        />
+      </div>
+      <form [formGroup]="form" class="profile-info" (ngSubmit)="onSubmit()">
+        <h2>{{ pokemon().name }}</h2>
+        <div class="input-container">
+          <label for="pokemon-name">Nom :</label>
+          <input
+            formControlName="name"
+            id="pokemon-name"
+            type="text"
+            [value]="pokemon().name"
+            placeholder="Nom du Pokémon"
+          />
+        </div>
+        <div class="input-container">
+          <label>Points de vie :</label>
+          <button type="button" (click)="decrementLife()">-</button>
+          <input
+            formControlName="life"
+            type="number"
+            [value]="pokemon().life"
+            title="Points de vie"
+            placeholder="Points de vie"
+          />
+          <button type="button" (click)="incrementLife()">+</button>
+        </div>
+        <div class="input-container">
+          <label>Dégâts :</label>
+          <button type="button" (click)="decrementDamage()">-</button>
+          <input
+            formControlName="damage"
+            type="number"
+            [value]="pokemon().damage"
+            title="Dégâts"
+            placeholder="Dégâts"
+          />
+          <button type="button" (click)="incrementDamage()">+</button>
+        </div>
+        <div class="checkbox-container">
+          <div>
+            <label>Types :</label>
+            <div>
+              @for(type of pokemonTypeList.controls; track type; let index =
+              $index){
+              <button
+                type="button"
+                (click)="pokemonTypeList.removeAt(index)"
+                [style.backgroundColor]="typesColor()[type.value].bg"
+                [style.color]="typesColor()[type.value].text"
+              >
+                {{ type.value }}
+                <span>X</span>
+              </button>
+              }
+            </div>
+            <div>
+              @for(type of pokemonService.getPokemonTypeList(); track type) {
+              <label>
+                <input
+                  #checkbox
+                  (change)="onPokemonTypeChange(type, $event)"
+                  [checked]="isPokemonTypeSelected(type)"
+                  formArrayName="types"
+                  type="checkbox"
+                  [value]="type"
+                  [id]="type"
+                  (change)="('toggleType(type)')"
+                />
+                {{ type }}
+              </label>
+              }
+            </div>
+          </div>
+        </div>
+        <div class="button-group">
+          <button type="button" [routerLink]="['/pokemons', pokemon().id]">
+            Retour
+          </button>
+          <button type="submit">Sauvegarder les changements</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
