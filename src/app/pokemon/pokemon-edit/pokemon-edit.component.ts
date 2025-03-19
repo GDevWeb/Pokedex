@@ -55,7 +55,7 @@ export class PokemonEditComponent {
         if (type) {
           acc[type] = {
             bg: getPokemonColor(type),
-            text: type === 'Electrik' ? '#000000' : '#FFFFFF', // Déplace la logique ici
+            text: type === 'Electrik' ? '#000000' : '#FFFFFF',
           };
         }
         return acc;
