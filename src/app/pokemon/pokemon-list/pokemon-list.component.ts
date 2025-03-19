@@ -1,9 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { PokemonBorderDirective } from '../../directives/pokemon-border.directive';
 import { Pokemon } from '../../pokemon.model';
 import { PokemonService } from '../../services/pokemon.service';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-pokemon-list',
@@ -33,16 +33,5 @@ export class PokemonListComponent {
     } else {
       return 'Moyen';
     }
-  }
-
-  incrementLife(pokemon: Pokemon): number {
-    return (pokemon.life = pokemon.life + 1);
-  }
-
-  decrementLife(pokemon: Pokemon): number {
-    if (pokemon.life <= 0) {
-      return (pokemon.life = 0);
-    }
-    return (pokemon.life = pokemon.life - 1);
   }
 }
