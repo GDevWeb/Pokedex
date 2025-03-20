@@ -1,3 +1,9 @@
+#loading-feedback {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 #container-search {
   width: 100%;
   display: flex;

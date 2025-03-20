@@ -13,6 +13,12 @@
   </form>
 </div>
 
+@if(loading()){
+<div id="loading-feedback">
+  <h2>Loading ...</h2>
+</div>
+}
+
 <div id="grid">
   @for (pokemon of pokemonListFiltered(); track pokemon.id) {
   <div
